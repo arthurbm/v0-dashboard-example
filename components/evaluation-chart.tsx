@@ -1,5 +1,12 @@
-"use client"
-import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+"use client";
+import {
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const data = [
   { date: "Jan", rating: 4.2 },
@@ -14,7 +21,7 @@ const data = [
   { date: "Out", rating: 4.5 },
   { date: "Nov", rating: 4.6 },
   { date: "Dez", rating: 4.7 },
-]
+];
 
 export function EvaluationChart() {
   return (
@@ -29,7 +36,14 @@ export function EvaluationChart() {
             bottom: 10,
           }}
         >
-          <XAxis dataKey="date" tickLine={true} axisLine={true} fontSize={10} tickMargin={5} stroke="currentColor" />
+          <XAxis
+            dataKey="date"
+            tickLine={true}
+            axisLine={true}
+            fontSize={10}
+            tickMargin={5}
+            stroke="currentColor"
+          />
           <YAxis
             domain={[3, 5]}
             tickCount={5}
@@ -46,34 +60,45 @@ export function EvaluationChart() {
                   <div className="rounded-lg border bg-background p-2 shadow-sm">
                     <div className="grid grid-cols-2 gap-2">
                       <div className="flex flex-col">
-                        <span className="text-[0.70rem] uppercase text-muted-foreground">Mês</span>
-                        <span className="font-bold text-muted-foreground">{payload[0].payload.date}</span>
+                        <span className="text-[0.70rem] uppercase text-muted-foreground">
+                          Mês
+                        </span>
+                        <span className="font-bold text-muted-foreground">
+                          {payload[0].payload.date}
+                        </span>
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-[0.70rem] uppercase text-muted-foreground">Média</span>
+                        <span className="text-[0.70rem] uppercase text-muted-foreground">
+                          Média
+                        </span>
                         <span className="font-bold">{payload[0].value}★</span>
                       </div>
                     </div>
                   </div>
-                )
+                );
               }
-              return null
+              return null;
             }}
           />
           <Line
             type="monotone"
             dataKey="rating"
             strokeWidth={3}
-            stroke="#7c3aed"
-            dot={{ r: 4, strokeWidth: 2, fill: "#7c3aed", stroke: "#7c3aed" }}
+            stroke="hsl(var(--primary))"
+            dot={{
+              r: 4,
+              strokeWidth: 2,
+              fill: "hsl(var(--primary))",
+              stroke: "hsl(var(--primary))",
+            }}
             activeDot={{
               r: 6,
-              fill: "#7c3aed",
-              stroke: "#7c3aed",
+              fill: "hsl(var(--primary))",
+              stroke: "hsl(var(--primary))",
             }}
           />
         </LineChart>
       </ResponsiveContainer>
     </div>
-  )
+  );
 }
