@@ -244,203 +244,209 @@ export default function DashboardPage() {
   });
 
   return (
-    <div className="flex flex-col gap-4 p-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">
-          Dashboard de Avaliações
-        </h1>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card className="overflow-hidden">
-          <CardHeader className="pb-0 pt-4 px-4">
-            <CardTitle className="text-lg">Métricas Avaliação</CardTitle>
-            <CardDescription className="text-xs">
-              Visão geral das avaliações
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="p-4 flex flex-col gap-3">
-            <div className="grid grid-cols-4 gap-2">
-              <div className="flex flex-col items-center justify-center rounded-md border bg-background p-2">
-                <div className="flex items-center text-xl font-bold">
-                  <Star className="mr-1 h-3 w-3 fill-primary text-primary" />
-                  {activeMetrics.average.toFixed(1)}
-                </div>
-                <p className="text-xs text-muted-foreground">média</p>
-              </div>
-              <div className="flex flex-col items-center justify-center rounded-md border bg-background p-2">
-                <div className="flex items-center text-xl font-bold">
-                  <CategoryIcon />
-                  {activeMetrics.total}
-                </div>
-                <p className="text-xs text-muted-foreground">aval.</p>
-              </div>
-              <div className="flex flex-col items-center justify-center rounded-md border bg-background p-2">
-                <div className="flex items-center text-xl font-bold">
-                  <Star className="mr-1 h-3 w-3 fill-primary text-primary" />
-                  {activeMetrics.minRating}
-                </div>
-                <p className="text-xs text-muted-foreground">nota mínima</p>
-              </div>
-              <div className="flex flex-col items-center justify-center rounded-md border bg-background p-2">
-                <div className="flex items-center text-xl font-bold">
-                  <Star className="mr-1 h-3 w-3 fill-primary text-primary" />
-                  {activeMetrics.maxRating}
-                </div>
-                <p className="text-xs text-muted-foreground">nota máxima</p>
-              </div>
-            </div>
-
-            <div className="flex justify-center space-x-2">
-              <Badge
-                variant={activeFilter === "geral" ? "secondary" : "outline"}
-                className="text-xs cursor-pointer hover:bg-secondary/80"
-                onClick={() => handleFilterClick("geral")}
-              >
-                Geral
-              </Badge>
-              <Badge
-                variant={activeFilter === "conteudo" ? "secondary" : "outline"}
-                className="text-xs cursor-pointer hover:bg-secondary/80"
-                onClick={() => handleFilterClick("conteudo")}
-              >
-                Conteúdo
-              </Badge>
-              <Badge
-                variant={activeFilter === "correcao" ? "secondary" : "outline"}
-                className="text-xs cursor-pointer hover:bg-secondary/80"
-                onClick={() => handleFilterClick("correcao")}
-              >
-                Correção
-              </Badge>
-            </div>
-
-            <div className="mt-1 space-y-2">
-              {activeMetrics.distribution.map((item) => (
-                <div key={item.stars} className="space-y-1">
-                  <div className="flex items-center justify-between text-xs">
-                    <span>{item.stars}★</span>
-                    <span className="text-muted-foreground">
-                      {item.percentage}%
-                    </span>
-                  </div>
-                  <div className="h-2 w-full rounded-full bg-muted">
-                    <div
-                      className="h-full rounded-full bg-primary"
-                      style={{ width: `${item.percentage}%` }}
-                    ></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="overflow-hidden">
-          <CardHeader className="pb-0 pt-4 px-4">
-            <CardTitle className="text-lg">Avaliações no tempo</CardTitle>
-            <CardDescription className="text-xs">
-              Tendência de avaliações
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="p-4">
-            <EvaluationChart />
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid gap-3">
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="w-[200px]">
-            <MultiSelect
-              options={dateOptions}
-              defaultValue={selectedDates}
-              onValueChange={setSelectedDates}
-              placeholder="Datas"
-              className="h-9"
-            />
-          </div>
-
-          <div className="w-[200px]">
-            <MultiSelect
-              options={planTypeOptions}
-              defaultValue={selectedPlanTypes}
-              onValueChange={setSelectedPlanTypes}
-              placeholder="Tipos de Plano"
-              className="h-9"
-            />
-          </div>
-
-          <div className="w-[200px]">
-            <MultiSelect
-              options={ratingOptions}
-              defaultValue={selectedRatings}
-              onValueChange={setSelectedRatings}
-              placeholder="Notas"
-              className="h-9"
-            />
-          </div>
-
-          <div className="relative flex-1">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Buscar avaliações..."
-              className="h-9 pl-8"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
+    <div className="flex justify-center w-full">
+      <div className="flex flex-col gap-4 p-4 w-full max-w-7xl">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold tracking-tight">
+            Dashboard de Avaliações
+          </h1>
         </div>
 
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nota</TableHead>
-                <TableHead>Tipo de Plano</TableHead>
-                <TableHead>Data</TableHead>
-                <TableHead className="w-[40%]">Comentário</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredEvaluations.map((evaluation) => (
-                <TableRow key={evaluation.id}>
-                  <TableCell>
-                    <div className="flex items-center">
-                      <Star className="mr-1 h-4 w-4 fill-primary text-primary" />
-                      <span>{evaluation.rating}</span>
+        <div className="grid gap-4 md:grid-cols-2">
+          <Card className="overflow-hidden">
+            <CardHeader className="pb-0 pt-4 px-4">
+              <CardTitle className="text-lg">Métricas Avaliação</CardTitle>
+              <CardDescription className="text-xs">
+                Visão geral das avaliações
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-4 flex flex-col gap-3">
+              <div className="grid grid-cols-4 gap-2">
+                <div className="flex flex-col items-center justify-center rounded-md border bg-background p-2">
+                  <div className="flex items-center text-xl font-bold">
+                    <Star className="mr-1 h-3 w-3 fill-primary text-primary" />
+                    {activeMetrics.average.toFixed(1)}
+                  </div>
+                  <p className="text-xs text-muted-foreground">média</p>
+                </div>
+                <div className="flex flex-col items-center justify-center rounded-md border bg-background p-2">
+                  <div className="flex items-center text-xl font-bold">
+                    <CategoryIcon />
+                    {activeMetrics.total}
+                  </div>
+                  <p className="text-xs text-muted-foreground">aval.</p>
+                </div>
+                <div className="flex flex-col items-center justify-center rounded-md border bg-background p-2">
+                  <div className="flex items-center text-xl font-bold">
+                    <Star className="mr-1 h-3 w-3 fill-primary text-primary" />
+                    {activeMetrics.minRating}
+                  </div>
+                  <p className="text-xs text-muted-foreground">nota mínima</p>
+                </div>
+                <div className="flex flex-col items-center justify-center rounded-md border bg-background p-2">
+                  <div className="flex items-center text-xl font-bold">
+                    <Star className="mr-1 h-3 w-3 fill-primary text-primary" />
+                    {activeMetrics.maxRating}
+                  </div>
+                  <p className="text-xs text-muted-foreground">nota máxima</p>
+                </div>
+              </div>
+
+              <div className="flex justify-center space-x-2">
+                <Badge
+                  variant={activeFilter === "geral" ? "secondary" : "outline"}
+                  className="text-xs cursor-pointer hover:bg-secondary/80"
+                  onClick={() => handleFilterClick("geral")}
+                >
+                  Geral
+                </Badge>
+                <Badge
+                  variant={
+                    activeFilter === "conteudo" ? "secondary" : "outline"
+                  }
+                  className="text-xs cursor-pointer hover:bg-secondary/80"
+                  onClick={() => handleFilterClick("conteudo")}
+                >
+                  Conteúdo
+                </Badge>
+                <Badge
+                  variant={
+                    activeFilter === "correcao" ? "secondary" : "outline"
+                  }
+                  className="text-xs cursor-pointer hover:bg-secondary/80"
+                  onClick={() => handleFilterClick("correcao")}
+                >
+                  Correção
+                </Badge>
+              </div>
+
+              <div className="mt-1 space-y-2">
+                {activeMetrics.distribution.map((item) => (
+                  <div key={item.stars} className="space-y-1">
+                    <div className="flex items-center justify-between text-xs">
+                      <span>{item.stars}★</span>
+                      <span className="text-muted-foreground">
+                        {item.percentage}%
+                      </span>
                     </div>
-                  </TableCell>
-                  <TableCell>{evaluation.planType}</TableCell>
-                  <TableCell>{evaluation.date}</TableCell>
-                  <TableCell>{evaluation.comment}</TableCell>
-                </TableRow>
-              ))}
-              {filteredEvaluations.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={4} className="h-24 text-center">
-                    Nenhuma avaliação encontrada.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                    <div className="h-2 w-full rounded-full bg-muted">
+                      <div
+                        className="h-full rounded-full bg-primary"
+                        style={{ width: `${item.percentage}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="overflow-hidden">
+            <CardHeader className="pb-0 pt-4 px-4">
+              <CardTitle className="text-lg">Avaliações no tempo</CardTitle>
+              <CardDescription className="text-xs">
+                Tendência de avaliações
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-4">
+              <EvaluationChart />
+            </CardContent>
+          </Card>
         </div>
 
-        <div className="flex justify-end">
-          <Button
-            variant="outline"
-            className="gap-2"
-            onClick={() => {
-              console.log("Exporting CSV...");
-              // Here you would implement the CSV export functionality
-              alert("Exportando dados para CSV...");
-            }}
-          >
-            <Download className="h-4 w-4" />
-            Exportar CSV
-          </Button>
+        <div className="grid gap-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="w-[200px]">
+              <MultiSelect
+                options={dateOptions}
+                defaultValue={selectedDates}
+                onValueChange={setSelectedDates}
+                placeholder="Datas"
+                className="h-9"
+              />
+            </div>
+
+            <div className="w-[200px]">
+              <MultiSelect
+                options={planTypeOptions}
+                defaultValue={selectedPlanTypes}
+                onValueChange={setSelectedPlanTypes}
+                placeholder="Tipos de Plano"
+                className="h-9"
+              />
+            </div>
+
+            <div className="w-[200px]">
+              <MultiSelect
+                options={ratingOptions}
+                defaultValue={selectedRatings}
+                onValueChange={setSelectedRatings}
+                placeholder="Notas"
+                className="h-9"
+              />
+            </div>
+
+            <div className="relative flex-1">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Buscar avaliações..."
+                className="h-9 pl-8"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Nota</TableHead>
+                  <TableHead>Tipo de Plano</TableHead>
+                  <TableHead>Data</TableHead>
+                  <TableHead className="w-[40%]">Comentário</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredEvaluations.map((evaluation) => (
+                  <TableRow key={evaluation.id}>
+                    <TableCell>
+                      <div className="flex items-center">
+                        <Star className="mr-1 h-4 w-4 fill-primary text-primary" />
+                        <span>{evaluation.rating}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>{evaluation.planType}</TableCell>
+                    <TableCell>{evaluation.date}</TableCell>
+                    <TableCell>{evaluation.comment}</TableCell>
+                  </TableRow>
+                ))}
+                {filteredEvaluations.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={4} className="h-24 text-center">
+                      Nenhuma avaliação encontrada.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+
+          <div className="flex justify-end">
+            <Button
+              variant="outline"
+              className="gap-2"
+              onClick={() => {
+                console.log("Exporting CSV...");
+                // Here you would implement the CSV export functionality
+                alert("Exportando dados para CSV...");
+              }}
+            >
+              <Download className="h-4 w-4" />
+              Exportar CSV
+            </Button>
+          </div>
         </div>
       </div>
     </div>
