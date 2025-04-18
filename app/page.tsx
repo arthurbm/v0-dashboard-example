@@ -245,46 +245,48 @@ export default function DashboardPage() {
 
   return (
     <div className="flex justify-center w-full">
-      <div className="flex flex-col gap-4 p-4 w-full max-w-7xl">
+      <div className="flex flex-col gap-4 p-2 sm:p-4 w-full max-w-7xl">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
             Dashboard de Avaliações
           </h1>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
           <Card className="overflow-hidden">
-            <CardHeader className="pb-0 pt-4 px-4">
-              <CardTitle className="text-lg">Métricas Avaliação</CardTitle>
+            <CardHeader className="pb-0 pt-3 px-3 sm:pt-4 sm:px-4">
+              <CardTitle className="text-base sm:text-lg">
+                Métricas Avaliação
+              </CardTitle>
               <CardDescription className="text-xs">
                 Visão geral das avaliações
               </CardDescription>
             </CardHeader>
-            <CardContent className="p-4 flex flex-col gap-3">
-              <div className="grid grid-cols-4 gap-2">
+            <CardContent className="p-3 sm:p-4 flex flex-col gap-3">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                 <div className="flex flex-col items-center justify-center rounded-md border bg-background p-2">
-                  <div className="flex items-center text-xl font-bold">
+                  <div className="flex items-center text-lg sm:text-xl font-bold">
                     <Star className="mr-1 h-3 w-3 fill-primary text-primary" />
                     {activeMetrics.average.toFixed(1)}
                   </div>
                   <p className="text-xs text-muted-foreground">média</p>
                 </div>
                 <div className="flex flex-col items-center justify-center rounded-md border bg-background p-2">
-                  <div className="flex items-center text-xl font-bold">
+                  <div className="flex items-center text-lg sm:text-xl font-bold">
                     <CategoryIcon />
                     {activeMetrics.total}
                   </div>
                   <p className="text-xs text-muted-foreground">aval.</p>
                 </div>
                 <div className="flex flex-col items-center justify-center rounded-md border bg-background p-2">
-                  <div className="flex items-center text-xl font-bold">
+                  <div className="flex items-center text-lg sm:text-xl font-bold">
                     <Star className="mr-1 h-3 w-3 fill-primary text-primary" />
                     {activeMetrics.minRating}
                   </div>
                   <p className="text-xs text-muted-foreground">nota mínima</p>
                 </div>
                 <div className="flex flex-col items-center justify-center rounded-md border bg-background p-2">
-                  <div className="flex items-center text-xl font-bold">
+                  <div className="flex items-center text-lg sm:text-xl font-bold">
                     <Star className="mr-1 h-3 w-3 fill-primary text-primary" />
                     {activeMetrics.maxRating}
                   </div>
@@ -355,8 +357,8 @@ export default function DashboardPage() {
         </div>
 
         <div className="grid gap-3">
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="w-[200px]">
+          <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-2">
+            <div className="w-full sm:w-[200px]">
               <MultiSelect
                 options={dateOptions}
                 defaultValue={selectedDates}
@@ -366,7 +368,7 @@ export default function DashboardPage() {
               />
             </div>
 
-            <div className="w-[200px]">
+            <div className="w-full sm:w-[200px]">
               <MultiSelect
                 options={planTypeOptions}
                 defaultValue={selectedPlanTypes}
@@ -376,7 +378,7 @@ export default function DashboardPage() {
               />
             </div>
 
-            <div className="w-[200px]">
+            <div className="w-full sm:w-[200px]">
               <MultiSelect
                 options={ratingOptions}
                 defaultValue={selectedRatings}
@@ -386,7 +388,7 @@ export default function DashboardPage() {
               />
             </div>
 
-            <div className="relative flex-1">
+            <div className="w-full relative flex-1">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
@@ -398,28 +400,34 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="rounded-md border">
+          <div className="rounded-md border overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Nota</TableHead>
-                  <TableHead>Tipo de Plano</TableHead>
-                  <TableHead>Data</TableHead>
+                  <TableHead className="w-[15%]">Nota</TableHead>
+                  <TableHead className="w-[25%]">Tipo de Plano</TableHead>
+                  <TableHead className="w-[20%]">Data</TableHead>
                   <TableHead className="w-[40%]">Comentário</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredEvaluations.map((evaluation) => (
                   <TableRow key={evaluation.id}>
-                    <TableCell>
+                    <TableCell className="whitespace-nowrap">
                       <div className="flex items-center">
                         <Star className="mr-1 h-4 w-4 fill-primary text-primary" />
                         <span>{evaluation.rating}</span>
                       </div>
                     </TableCell>
-                    <TableCell>{evaluation.planType}</TableCell>
-                    <TableCell>{evaluation.date}</TableCell>
-                    <TableCell>{evaluation.comment}</TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      {evaluation.planType}
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      {evaluation.date}
+                    </TableCell>
+                    <TableCell className="max-w-[220px] sm:max-w-none truncate sm:whitespace-normal">
+                      {evaluation.comment}
+                    </TableCell>
                   </TableRow>
                 ))}
                 {filteredEvaluations.length === 0 && (
@@ -433,10 +441,10 @@ export default function DashboardPage() {
             </Table>
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end mt-2">
             <Button
               variant="outline"
-              className="gap-2"
+              className="gap-2 w-full sm:w-auto"
               onClick={() => {
                 console.log("Exporting CSV...");
                 // Here you would implement the CSV export functionality
